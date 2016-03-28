@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160130000003) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "products", force: :cascade do |t|
     t.string   "product_name"
     t.text     "product_description"
@@ -25,8 +28,8 @@ ActiveRecord::Schema.define(version: 20160130000003) do
     t.datetime "updated_at",          null: false
   end
 
-  add_index "products", ["buyer_id"], name: "index_products_on_buyer_id"
-  add_index "products", ["seller_id"], name: "index_products_on_seller_id"
+  add_index "products", ["buyer_id"], name: "index_products_on_buyer_id", using: :btree
+  add_index "products", ["seller_id"], name: "index_products_on_seller_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
