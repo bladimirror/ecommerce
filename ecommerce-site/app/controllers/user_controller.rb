@@ -64,9 +64,9 @@ class UserController < ApplicationController
   def user_dashboard
       puts "Loading user information..."
       @user = User.find_by_id(session[:user_id])
-      @sell_products = Product.where(seller_id: @user.id, sell_status: "true")
-      @sold_products = Product.where(seller_id: @user.id, sell_status: "false")
-      @buy_products = Product.where(buyer_id: @user.id)
+      @sell_products = Product.where(seller_idNumber: @user.id, sell_status: "true")
+      @sold_products = Product.where(seller_idNumber: @user.id, sell_status: "false")
+      @buy_products = Product.where(buyer_idNumber: @user.id)
       render "user_dashboard"
   end
 
