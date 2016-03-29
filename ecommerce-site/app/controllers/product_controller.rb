@@ -20,7 +20,7 @@ class ProductController < ApplicationController
 
   def add_product_db
     puts "Adding new product to database..."
-    @products = Product.create(product_name: params[:product_name], product_description: params[:product_description], product_price: params[:product_price], sell_status: params[:sell_status], bought_status: params[:bought_status], seller_id: params[:seller_id])
+    @products = Product.create(product_name: params[:product_name], product_description: params[:product_description], product_price: params[:product_price], sell_status: params[:sell_status], bought_status: params[:bought_status], sellerIDnumber: params[:sellerIDnumber])
     puts "Redirecting from NEW_PRODUCT method to USER_DASHBOARD method..."
     flash[:notice] = "Item successfully added"
     redirect_to "/user_dashboard"
@@ -28,7 +28,7 @@ class ProductController < ApplicationController
 
   def update_product
     puts "Updating product status in database..."
-    @products = Product.update(params[:id], sell_status: params[:sell_status],  bought_status: params[:bought_status], buyer_id: params[:buyer_id])
+    @products = Product.update(params[:id], sell_status: params[:sell_status],  bought_status: params[:bought_status], buyerIDnumber: params[:buyerIDnumber])
     puts "Redirecting from UPDATE_PRODUCT method to ALL_PRODUCTS method..."
     redirect_to "/all_products"
   end
