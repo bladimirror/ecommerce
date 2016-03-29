@@ -1,6 +1,6 @@
 class UpdatingBuySellColumns < ActiveRecord::Migration
   def change
-  	rename_column :products, :seller_id, :seller_idNumber
-  	rename_column :products, :buyer_id, :buyer_idNumber
+  	change_column :products, :sell_status, :text
+  	change_column :products, :bought_status, :text
   end
 end

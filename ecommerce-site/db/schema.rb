@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328173630) do
+ActiveRecord::Schema.define(version: 20160329165746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,8 +22,8 @@ ActiveRecord::Schema.define(version: 20160328173630) do
     t.float    "product_price"
     t.text     "sell_status"
     t.text     "bought_status"
-    t.integer  "seller_idNumber"
-    t.integer  "buyer_idNumber"
+    t.integer  "seller_id"
+    t.integer  "buyer_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
@@ -38,4 +38,6 @@ ActiveRecord::Schema.define(version: 20160328173630) do
     t.text     "salt"
   end
 
+  add_foreign_key "products", "users", column: "buyer_id"
+  add_foreign_key "products", "users", column: "seller_id"
 end
