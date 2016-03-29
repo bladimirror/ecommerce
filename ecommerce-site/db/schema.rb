@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329165746) do
+ActiveRecord::Schema.define(version: 20160329173354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,5 @@ ActiveRecord::Schema.define(version: 20160329165746) do
     t.text     "salt"
   end
 
-  add_foreign_key "products", "users", column: "buyer_id"
-  add_foreign_key "products", "users", column: "seller_id"
+  add_foreign_key "products", "users", column: "id"
 end
