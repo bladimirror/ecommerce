@@ -3,9 +3,10 @@ class UserController < ApplicationController
 ##### METHOD LOADS LOG-IN PAGE ##### 
   def index
     puts "Loading registration and login page..."
-    if session[:status] == "new_session"
+    if session[:status] == "new_session" or session[:registration_error_status] = true or session[:usernum_error_status] = true
       session[:registration_error_status] = false
       session[:login_error_status] = false
+      session[:usernum_error_status] == false
       session[:status] = nil
     end
     render "index"
@@ -15,19 +16,28 @@ class UserController < ApplicationController
   def new_user
     puts "Validating form data..."
     @user = User.new(first_name: params[:first_name], last_name: params[:last_name], email: params[:email], password: params[:password])
-    
-    if @user.valid?
-      puts "Adding new user to database..."
-      @user = User.create(first_name: params[:first_name], last_name: params[:last_name], email: params[:email], password: params[:password])
-      
-      puts "Redirecting from NEW_USER method to ALL_PRODUCTS method..."
-      session[:user_id] = @user.id
-      session[:status] = "new_user"
-      render "user_dashboard", notice: "User was successfully created!"
+    puts "Creating User ID..."
+    range = [*'0'..'9',*'A'..'Z',*'a'..'z']
+    @usernum_unique = (0...12).map{ range.sample }.join
+
+    if User.exists?(usernum: @usernum_unique) == false
+      if @user.valid?
+        puts "Adding new user to database..."
+        @user = User.create(first_name: params[:first_name], last_name: params[:last_name], email: params[:email], password: params[:password], usernum: @usernum_unique)
+        puts "Redirecting from NEW_USER method to ALL_PRODUCTS method..."
+        session[:user_id] = @user.id
+        session[:status] = "new_user"
+        render "user_dashboard", notice: "User was successfully created!"
+
+        else
+          @errors = @user.errors.full_messages
+          session[:registration_error_status] = true
+          print "\nErrors in form... %s\n" % [@errors]
+          render "index"
+        end
     else
-      @errors = @user.errors.full_messages
-      session[:registration_error_status] = true
-      print "\nErrors in form... %s\n" % [@errors]
+      session[:usernum_error_status] = true
+      print "\nUser exists in database..."
       render "index"
     end
   end

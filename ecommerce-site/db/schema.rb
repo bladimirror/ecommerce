@@ -11,10 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329173831) do
+ActiveRecord::Schema.define(version: 20170908051634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.string   "title"
+    t.string   "description"
+    t.string   "location"
+    t.date     "date"
+    t.time     "time"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "itineries", force: :cascade do |t|
+    t.integer  "user_id"
+    t.date     "arrival_date"
+    t.date     "departure_date"
+    t.string   "lodging_info"
+    t.string   "travel_status"
+    t.string   "travel_group"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "itineries", ["user_id"], name: "index_itineries_on_user_id", using: :btree
 
   create_table "products", force: :cascade do |t|
     t.string   "product_name"
@@ -28,6 +51,20 @@ ActiveRecord::Schema.define(version: 20160329173831) do
     t.datetime "updated_at",          null: false
   end
 
+  create_table "user_events", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "rsvp_id"
+    t.integer  "bookmarked_id"
+    t.integer  "past_rsvp_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "user_events", ["bookmarked_id"], name: "index_user_events_on_bookmarked_id", using: :btree
+  add_index "user_events", ["past_rsvp_id"], name: "index_user_events_on_past_rsvp_id", using: :btree
+  add_index "user_events", ["rsvp_id"], name: "index_user_events_on_rsvp_id", using: :btree
+  add_index "user_events", ["user_id"], name: "index_user_events_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -36,7 +73,11 @@ ActiveRecord::Schema.define(version: 20160329173831) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text     "salt"
+    t.string   "usernum"
   end
 
   add_foreign_key "products", "users", column: "id"
+  add_foreign_key "user_events", "events", column: "bookmarked_id"
+  add_foreign_key "user_events", "events", column: "past_rsvp_id"
+  add_foreign_key "user_events", "events", column: "rsvp_id"
 end
